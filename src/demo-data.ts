@@ -1,0 +1,210 @@
+import { addDays, format } from "date-fns";
+import type { BrainData } from "./types.ts";
+
+/** Dates are relative to the local day on first launch so every visitor gets a useful workspace. */
+export function createDemoData(now = new Date()): BrainData {
+  const day = (offset: number) => format(addDays(now, offset), "yyyy-MM-dd");
+  const createdAt = addDays(now, -14).toISOString();
+
+  return {
+    projects: [
+      {
+        id: "field-guide",
+        name: "Neighborhood Field Guide",
+        status: "Active",
+        createdAt,
+      },
+      {
+        id: "workshop",
+        name: "Printmaking Workshop",
+        status: "Planned",
+        createdAt,
+      },
+      {
+        id: "job-applications",
+        name: "Job Applications",
+        status: "Active",
+        createdAt,
+      },
+    ],
+    tasks: [
+      {
+        id: "guide-map",
+        title: "Review the field guide map",
+        projectId: "field-guide",
+        plannedDate: day(0),
+        dueDate: day(0),
+        priority: "high",
+        kind: "task",
+        done: false,
+        createdAt,
+        notes:
+          "Check the route labels and add a legend for the three suggested walks.",
+      },
+      {
+        id: "workshop-materials",
+        title: "Draft the workshop materials list",
+        projectId: "workshop",
+        plannedDate: day(0),
+        dueDate: day(3),
+        priority: "normal",
+        kind: "task",
+        done: false,
+        createdAt,
+      },
+      {
+        id: "guide-caption",
+        title: "Send the first caption draft",
+        projectId: "field-guide",
+        plannedDate: day(-3),
+        dueDate: day(-3),
+        priority: "normal",
+        kind: "task",
+        done: false,
+        createdAt,
+      },
+      {
+        id: "guide-ideas",
+        title: "Collect ideas for a second walking route",
+        projectId: "field-guide",
+        priority: "normal",
+        kind: "task",
+        done: false,
+        createdAt,
+      },
+      {
+        id: "job-studio",
+        title: "Follow up with Lantern Vale Studio",
+        projectId: "job-applications",
+        plannedDate: day(0),
+        dueDate: day(2),
+        priority: "normal",
+        kind: "task",
+        done: false,
+        createdAt,
+        notes:
+          "Prepare two examples of accessible design decisions from a portfolio project.",
+        jobDetails: {
+          company: "Lantern Vale Studio",
+          position: "Product Engineer",
+          location: "Remote",
+          stage: "Interviewing",
+          category: "Tech",
+          recommendedDate: day(-5),
+          description:
+            "Build accessible tools for independent museums and cultural organizations.",
+          contact: {
+            name: "Rowan Finch",
+            title: "Engineering Lead",
+            outreachDraft:
+              "Hi Rowan, thanks for the conversation about the collections search project. I’d enjoy sharing a short walkthrough of my accessibility testing process.",
+          },
+        },
+      },
+      {
+        id: "job-archive",
+        title: "Review the Fable Harbor role",
+        projectId: "job-applications",
+        dueDate: day(7),
+        priority: "normal",
+        kind: "task",
+        done: false,
+        createdAt,
+        jobDetails: {
+          company: "Fable Harbor Archive",
+          position: "Frontend Developer",
+          location: "Remote",
+          stage: "Interested",
+          description:
+            "Design and maintain a public catalog for fictional collections.",
+        },
+      },
+      {
+        id: "guide-outline",
+        title: "Outline the field guide sections",
+        projectId: "field-guide",
+        priority: "normal",
+        kind: "task",
+        done: true,
+        createdAt,
+        completedAt: addDays(now, -2).toISOString(),
+      },
+      {
+        id: "workshop-reminder",
+        title: "Confirm the workshop room layout",
+        projectId: "workshop",
+        dueDate: day(0),
+        dueTime: "16:15",
+        priority: "normal",
+        kind: "reminder",
+        done: false,
+        createdAt,
+      },
+    ],
+    events: [
+      {
+        id: "guide-session",
+        title: "Field guide map review",
+        projectId: "field-guide",
+        taskId: "guide-map",
+        date: day(0),
+        startTime: "10:00",
+        endTime: "11:00",
+        kind: "work-session",
+        category: "Project Work",
+      },
+      {
+        id: "studio-session",
+        title: "Studio planning session",
+        projectId: "workshop",
+        date: day(0),
+        startTime: "14:00",
+        endTime: "14:45",
+        kind: "event",
+        category: "Meeting / Appointment",
+      },
+      {
+        id: "workshop-session",
+        title: "Printmaking practice",
+        projectId: "workshop",
+        taskId: "workshop-materials",
+        date: day(1),
+        startTime: "09:30",
+        endTime: "10:30",
+        kind: "work-session",
+        category: "Project Work",
+        recurrence: { type: "weekly", weekdays: [] },
+      },
+      {
+        id: "guide-walk",
+        title: "Walk the sample route",
+        projectId: "field-guide",
+        date: day(2),
+        startTime: "15:00",
+        endTime: "16:00",
+        kind: "event",
+        category: "Personal",
+      },
+    ],
+    notes: [
+      {
+        id: "guide-note",
+        projectId: "field-guide",
+        text: "Try a one-page map with the route on the front and a short accessibility legend on the back.",
+        createdAt,
+      },
+    ],
+    groceries: [
+      { id: "grocery-pears", title: "Pears", done: false, createdAt },
+      {
+        id: "grocery-rice",
+        title: "Brown rice",
+        store: "Market stall",
+        done: false,
+        createdAt,
+      },
+      { id: "grocery-tea", title: "Herbal tea", done: true, createdAt },
+    ],
+    preferences: {},
+  };
+}
